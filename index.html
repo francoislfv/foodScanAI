@@ -1,114 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>FoodScan AI - Solution intelligente contre le gaspillage alimentaire</title>
-        <meta charset="utf-8" />
-        <meta name="description" content="Utilisez l'intelligence artificielle pour analyser vos aliments et lutter contre le gaspillage alimentaire. Une solution RSE innovante pour les particuliers et les entreprises.">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="./image/pngegg.png"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./css/reset.css" />
-        <link rel="stylesheet" href="./css/style_index.css" />
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-    </head>
-    <body>
-        <header>
-            <div class="navbar">
-                <div class="logo">
-                    <a href="landing.html"><i class="fas fa-leaf"></i> FoodScan</a>
-                    <span class="ai-badge">AI</span>
-                </div>
-                
-                <ul class="categories">
-                    <li><a href="landing.html" class="active">Accueil</a></li>
-                    <li><a href="index.html" data-section="scanner">Scanner</a></li>
-                    <li><a href="https://www.ademe.fr" data-section="statistiques"target="_blank">Impact RSE</a></li>
-                    <li><a href="https://www.lesfruitsetlegumesfrais.com/recettes" target="_blank">Recettes Anti-Gaspi</a></li>
-                </ul>
-                
-                <a href="#" class="action_btn"><i class="fas fa-rocket"></i> Démarrer</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodScan AI - Réduisons le gaspillage alimentaire</title>
+    <link rel="icon" href="./image/pngegg.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style_landing.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">
+                <span class="logo-text"><i class="fas fa-leaf"></i>FoodScan</span>
+                <span class="ai-badge">AI</span>
             </div>
-        </header>
-        
-        <h1>
-            <i class="fas fa-robot"></i>
-            Intelligence Artificielle au service de l'anti-gaspillage
-            <span class="subtitle">Analysez vos aliments et prenez des décisions éclairées</span>
-        </h1>
-        
-        <section id="model">
-            <div class="upload-container">
-                <input type="file" id="imageUpload" accept="image/*">
-                <p class="upload-text"><i class="fas fa-cloud-upload-alt"></i> Déposez votre image ou cliquez pour sélectionner</p>
-            </div>
-            <div class="preview-container">
-                <img id="selectedImage" src="" alt="Aperçu de l'image" style="display:none; max-width: 500px; height: auto;"/>
-            </div>
-            <div id="graph-wrapper" class="results-container">
-                <!-- Les résultats de l'IA seront affichés ici -->
-            </div>
-        </section>
-
-        <section id="info">
-            <h2><i class="fas fa-lightbulb"></i> Intelligence Artificielle & RSE</h2>
-            <p>Notre solution utilise des algorithmes d'apprentissage profond pour analyser avec précision l'état de vos aliments. 
-               En combinant vision par ordinateur et analyses prédictives, nous vous aidons à :</p>
-            
-            <div class="features-grid">
-                <div class="feature">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Évaluation Précise</h3>
-                    <p>Détermination instantanée de la fraîcheur des aliments</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-leaf"></i>
-                    <h3>Impact Environnemental</h3>
-                    <p>Réduction de l'empreinte carbone liée au gaspillage</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Suivi & Analytics</h3>
-                    <p>Visualisez vos progrès en matière d'anti-gaspillage</p>
-                </div>
-            </div>
-        </section>
-        
-        <div class="links-container">
-            <a href="https://www.ademe.fr" target="_blank" class="button primary"><i class="fas fa-chart-bar"></i> Voir l'Impact RSE</a>
-            <a href="https://www.lesfruitsetlegumesfrais.com/recettes" target="_blank" class="button secondary"><i class="fas fa-book-open"></i> Guide Anti-Gaspillage</a>
+            <a href="scanner.html" class="try-button">Essayer maintenant</a>
         </div>
+    </nav>
 
-        <script type="module" src="./js/model-runner.js"></script>
-        <script type="module" src="./js/bar-graph.js"></script>
-        <script type="module">
-            import { setupModel } from './js/model-runner.js';
-            import { setupBarGraph, updateBarGraph } from './js/bar-graph.js';
-            
-            const URL = 'https://teachablemachine.withgoogle.com/models/AKPTBREVZ/';
-            
-            // Initialisation
-            document.addEventListener('DOMContentLoaded', async () => {
-                await setupBarGraph(URL);
-                await setupModel(URL, updateBarGraph);
-                
-                // Image upload handling
-                const imageUpload = document.getElementById('imageUpload');
-                const selectedImage = document.getElementById('selectedImage');
-                
-                imageUpload.addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            selectedImage.src = e.target.result;
-                            selectedImage.style.display = 'block';
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            });
-        </script>
-    </body>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Donnez une seconde chance à vos aliments</h1>
+                <p>L'intelligence artificielle au service de la lutte contre le gaspillage alimentaire</p>
+                <div class="cta-group">
+                    <a href="scanner.html" class="cta-button">Commencer gratuitement</a>
+                    <a href="#impact" class="learn-more">En savoir plus <i class="fas fa-arrow-down"></i></a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="eco-grid"></div>
+                <div class="floating-elements">
+                    <span style="top: 15%; left: 20%; animation: float 7s ease-in-out infinite;">🍎</span>
+                    <span style="top: 45%; left: 75%; animation: floatReverse 8s ease-in-out infinite;">🥦</span>
+                    <span style="top: 75%; left: 30%; animation: floatSlow 9s ease-in-out infinite;">🍅</span>
+                    <span style="top: 25%; left: 60%; animation: float 6s ease-in-out infinite;">🥝</span>
+                    <span style="top: 60%; left: 15%; animation: floatReverse 7s ease-in-out infinite;">🍊</span>
+                    <span style="top: 80%; left: 80%; animation: floatSlow 8s ease-in-out infinite;">🥬</span>
+                    <span style="top: 35%; left: 40%; animation: float 8s ease-in-out infinite;">🍇</span>
+                    <span style="top: 70%; left: 60%; animation: floatReverse 6s ease-in-out infinite;">🥒</span>
+                    <span style="top: 20%; left: 85%; animation: floatSlow 7s ease-in-out infinite;">🍌</span>
+                    <span style="top: 90%; left: 40%; animation: float 9s ease-in-out infinite;">🥕</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="impact">
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <i class="fas fa-leaf"></i>
+                    <div class="impact-number">-30%</div>
+                    <p>de gaspillage alimentaire</p>
+                </div>
+                <div class="impact-card">
+                    <i class="fas fa-brain"></i>
+                    <div class="impact-number">99%</div>
+                    <p>de précision IA</p>
+                </div>
+                <div class="impact-card">
+                    <i class="fas fa-euro-sign"></i>
+                    <div class="impact-number">400€</div>
+                    <p>économisés par an</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Rejoignez le mouvement</h2>
+            <p>Contribuez à un avenir plus durable en réduisant votre impact environnemental</p>
+            <a href="scanner.html" class="cta-button">Commencer maintenant</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 FoodScan AI - Solution innovante contre le gaspillage alimentaire</p>
+        </div>
+    </footer>
+</body>
 </html>

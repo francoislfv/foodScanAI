@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>FoodScan AI - Solution intelligente contre le gaspillage alimentaire</title>
+        <meta charset="utf-8" />
+        <meta name="description" content="Utilisez l'intelligence artificielle pour analyser vos aliments et lutter contre le gaspillage alimentaire. Une solution RSE innovante pour les particuliers et les entreprises.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="./image/pngegg.png"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/style_index.css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="navbar">
+                <div class="logo">
+                    <a href="landing.html"><i class="fas fa-leaf"></i> FoodScan</a>
+                    <span class="ai-badge">AI</span>
+                </div>
+                
+                <ul class="categories">
+                    <li><a href="landing.html" class="active">Accueil</a></li>
+                    <li><a href="index.html" data-section="scanner">Scanner</a></li>
+                    <li><a href="https://www.ademe.fr" data-section="statistiques"target="_blank">Impact RSE</a></li>
+                    <li><a href="https://www.lesfruitsetlegumesfrais.com/recettes" target="_blank">Recettes Anti-Gaspi</a></li>
+                </ul>
+                
+                <a href="#" class="action_btn"><i class="fas fa-rocket"></i> Démarrer</a>
+            </div>
+        </header>
+        
+        <h1>
+            <i class="fas fa-robot"></i>
+            Intelligence Artificielle au service de l'anti-gaspillage
+            <span class="subtitle">Analysez vos aliments et prenez des décisions éclairées</span>
+        </h1>
+        
+        <section id="model">
+            <div class="upload-container">
+                <input type="file" id="imageUpload" accept="image/*">
+                <p class="upload-text"><i class="fas fa-cloud-upload-alt"></i> Déposez votre image ou cliquez pour sélectionner</p>
+            </div>
+            <div class="preview-container">
+                <img id="selectedImage" src="" alt="Aperçu de l'image" style="display:none; max-width: 500px; height: auto;"/>
+            </div>
+            <div id="graph-wrapper" class="results-container">
+                <!-- Les résultats de l'IA seront affichés ici -->
+            </div>
+        </section>
+
+        <section id="info">
+            <h2><i class="fas fa-lightbulb"></i> Intelligence Artificielle & RSE</h2>
+            <p>Notre solution utilise des algorithmes d'apprentissage profond pour analyser avec précision l'état de vos aliments. 
+               En combinant vision par ordinateur et analyses prédictives, nous vous aidons à :</p>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Évaluation Précise</h3>
+                    <p>Détermination instantanée de la fraîcheur des aliments</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Impact Environnemental</h3>
+                    <p>Réduction de l'empreinte carbone liée au gaspillage</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Suivi & Analytics</h3>
+                    <p>Visualisez vos progrès en matière d'anti-gaspillage</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="links-container">
+            <a href="https://www.ademe.fr" target="_blank" class="button primary"><i class="fas fa-chart-bar"></i> Voir l'Impact RSE</a>
+            <a href="https://www.lesfruitsetlegumesfrais.com/recettes" target="_blank" class="button secondary"><i class="fas fa-book-open"></i> Guide Anti-Gaspillage</a>
+        </div>
+
+        <script type="module" src="./js/model-runner.js"></script>
+        <script type="module" src="./js/bar-graph.js"></script>
+        <script type="module">
+            import { setupModel } from './js/model-runner.js';
+            import { setupBarGraph, updateBarGraph } from './js/bar-graph.js';
+            
+            const URL = 'https://teachablemachine.withgoogle.com/models/AKPTBREVZ/';
+            
+            // Initialisation
+            document.addEventListener('DOMContentLoaded', async () => {
+                await setupBarGraph(URL);
+                await setupModel(URL, updateBarGraph);
+                
+                // Image upload handling
+                const imageUpload = document.getElementById('imageUpload');
+                const selectedImage = document.getElementById('selectedImage');
+                
+                imageUpload.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            selectedImage.src = e.target.result;
+                            selectedImage.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
